@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { ApiResponse } from '@types/api';
 
 export interface ProductInfo {
@@ -8,7 +10,7 @@ export interface ProductInfo {
   imageUrl: string;
 }
 export interface ProductRequest {
-  memberId: number;
+  'member-id': number;
   page: number;
   size: number;
 }

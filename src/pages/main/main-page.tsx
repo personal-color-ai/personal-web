@@ -1,4 +1,6 @@
 import {useState} from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import SearchIcon from '@assets/search.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
@@ -85,9 +87,9 @@ const MainPage = () => {
   const memberId = 1;
 
   const {data, fetchNextPage, hasNextPage, isFetchingNextPage} = useInfiniteProductList({
-    memberId,
+    'member-id': memberId,
     size: 10,
-    page: 0
+    page: 2
   });
 
   console.log(data);

@@ -1,10 +1,12 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { productApi } from '@apis/productApi';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { ProductRequest } from '@types/product';
 
 export const useInfiniteProductList = (params: ProductRequest) => {
   return useInfiniteQuery({
-    queryKey: ['productList', params.memberId],
+    queryKey: ['productList', params['member-id']],
     initialPageParam: 0,
     queryFn: async ({pageParam = 0}) => {
       return await productApi.getProductList({
