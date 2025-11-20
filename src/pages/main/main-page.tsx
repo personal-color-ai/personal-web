@@ -56,6 +56,10 @@ const MainPage = () => {
     return <div className="text-center p-10">⏳ 제품 목록을 불러오는 중...</div>;
   }
 
+  const convertScore = (origin: number) => {
+    const scoreOutOf5 = (origin / 100) * 5;
+    return Math.round(scoreOutOf5 * 10) / 10;
+  }
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-pink-50 to-violet-50">
       <div className="bg-white w-full px-8 p-6 border-b-1 border-gray-100">
@@ -94,7 +98,7 @@ const MainPage = () => {
                   <div className="flex items-center gap-1">
                     <StatIcon className="h-3 w-3 text-yellow-400" />
                     <span className="text-xs">
-                        {product.rating}
+                        {convertScore(product.rating)}
                       </span>
                   </div>
                 </div>
