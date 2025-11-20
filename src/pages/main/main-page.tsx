@@ -2,10 +2,15 @@ import {useState, useRef, useEffect} from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import SearchIcon from '@assets/search.svg?react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import StatIcon from '@assets/star.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
 import {useInfiniteProductList} from '../../hooks/useInfiniteProductList';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import {ProductInfo} from '@types/product';
 
 const MainPage = () => {
   const [colorType, setColorType] = useState<string>("가을 웜 뮤트");
@@ -69,14 +74,13 @@ const MainPage = () => {
       <div className="p-8">
         <p className=" text-black text-lg font-semibold mb-5">당신을 위한 추천 제품</p>
         <div className="grid grid-cols-2 gap-3">
-          {products.map((product, idx) => (
+          {products.map((product: ProductInfo, idx: number) => (
             <Card
               key={idx}
               className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => 2}
             >
               <CardContent className="p-0">
-                {/* Product Image */}
                 <div className="aspect-square bg-gray-100 relative">
                   <ImageWithFallback
                     src={product?.imageUrl}
@@ -84,12 +88,7 @@ const MainPage = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-
-                {/* Product Info */}
                 <div className="p-3 space-y-1">
-                  {product.colorShade && (
-                    <p className="text-xs text-gray-500">{product.colorShade}</p>
-                  )}
                   <p className="text-xs text-gray-700">{product.brand}</p>
                   <p className="text-sm line-clamp-2">{product.name}</p>
                   <div className="flex items-center gap-1">
