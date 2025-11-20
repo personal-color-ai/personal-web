@@ -2,6 +2,7 @@ import {useState} from 'react';
 import SearchIcon from '@assets/search.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
+import {useInfiniteProductList} from '../../hooks/useInfiniteProductList';
 
 interface Product {
   id: string;
@@ -80,6 +81,16 @@ const recommendedProducts: Product[] = [
 
 const MainPage = () => {
   const [colorType, setColorType] = useState<string>("가을 웜 뮤트");
+
+  const memberId = 1;
+
+  const {data, fetchNextPage, hasNextPage, isFetchingNextPage} = useInfiniteProductList({
+    memberId,
+    size: 10,
+    page: 0
+  });
+
+  console.log(data);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-pink-50 to-violet-50">
