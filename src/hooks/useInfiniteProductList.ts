@@ -4,7 +4,7 @@ import { productApi } from '@apis/productApi';
 // @ts-expect-error
 import { ProductRequest } from '@types/product';
 
-export const useInfiniteProductList = (params: ProductRequest) => {
+export const useInfiniteProductList = (params: { 'member-id': number; size: number }) => {
   return useInfiniteQuery({
     queryKey: ['productList', params['member-id']],
     initialPageParam: 0,

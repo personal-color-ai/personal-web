@@ -1,98 +1,55 @@
-import {useState} from 'react';
+import {useState, useRef, useEffect} from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import SearchIcon from '@assets/search.svg?react';
+import StatIcon from '@assets/star.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
 import {useInfiniteProductList} from '../../hooks/useInfiniteProductList';
 
-interface Product {
-  id: string;
-  brand: string;
-  name: string;
-  image: string;
-  rating: number;
-  reviewCount: number;
-  colorShade?: string;
-}
-
-// Mock product data
-const recommendedProducts: Product[] = [
-  {
-    id: '1',
-    brand: '클리오',
-    name: '프리즘 하이라이터',
-    image: 'makeup highlighter',
-    rating: 4.8,
-    reviewCount: 234,
-    colorShade: '04 그레이스 오팔'
-  },
-  {
-    id: '2',
-    brand: '에뛰드',
-    name: '러블리 쿠키 블러셔',
-    image: 'makeup blush',
-    rating: 4.8,
-    reviewCount: 156,
-    colorShade: 'PP501 라벤더챠프 케이크'
-  },
-  {
-    id: '3',
-    brand: '롬앤',
-    name: '쥬시 래스팅 틴트',
-    image: 'lip tint',
-    rating: 4.7,
-    reviewCount: 892,
-    colorShade: '06 피그피그'
-  },
-  {
-    id: '4',
-    brand: '헤라',
-    name: '센슈얼 파우더 매트',
-    image: 'lipstick matte',
-    rating: 4.9,
-    reviewCount: 445,
-    colorShade: '421 로즈테라피'
-  },
-  {
-    id: '4',
-    brand: '헤라',
-    name: '센슈얼 파우더 매트',
-    image: 'lipstick matte',
-    rating: 4.9,
-    reviewCount: 445,
-    colorShade: '421 로즈테라피'
-  },{
-    id: '4',
-    brand: '헤라',
-    name: '센슈얼 파우더 매트',
-    image: 'lipstick matte',
-    rating: 4.9,
-    reviewCount: 445,
-    colorShade: '421 로즈테라피'
-  },{
-    id: '4',
-    brand: '헤라',
-    name: '센슈얼 파우더 매트',
-    image: 'lipstick matte',
-    rating: 4.9,
-    reviewCount: 445,
-    colorShade: '421 로즈테라피'
-  }
-];
-
 const MainPage = () => {
   const [colorType, setColorType] = useState<string>("가을 웜 뮤트");
-
   const memberId = 1;
 
-  const {data, fetchNextPage, hasNextPage, isFetchingNextPage} = useInfiniteProductList({
+  const observerTargetRef = useRef<HTMLDivElement>(null);
+
+  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading} = useInfiniteProductList({
     'member-id': memberId,
     size: 10,
-    page: 2
   });
 
-  console.log(data);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const products = data?.pages.flatMap(page => page.result?.list || []) || [];
+
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+    if (!observerTargetRef.current) return;
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      // 관찰 대상이 뷰포트에 들어왔고, 다음 페이지가 있으면 데이터를 불러옵니다.
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1,
+    });
+
+    observer.observe(observerTargetRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoading) {
+    return <div className="text-center p-10">⏳ 제품 목록을 불러오는 중...</div>;
+  }
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-pink-50 to-violet-50">
@@ -112,9 +69,9 @@ const MainPage = () => {
       <div className="p-8">
         <p className=" text-black text-lg font-semibold mb-5">당신을 위한 추천 제품</p>
         <div className="grid grid-cols-2 gap-3">
-          {recommendedProducts.map((product) => (
+          {products.map((product, idx) => (
             <Card
-              key={product.id}
+              key={idx}
               className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => 2}
             >
@@ -122,7 +79,7 @@ const MainPage = () => {
                 {/* Product Image */}
                 <div className="aspect-square bg-gray-100 relative">
                   <ImageWithFallback
-                    src={`https://source.unsplash.com/300x300/?${product.image}`}
+                    src={product?.imageUrl}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
@@ -136,10 +93,9 @@ const MainPage = () => {
                   <p className="text-xs text-gray-700">{product.brand}</p>
                   <p className="text-sm line-clamp-2">{product.name}</p>
                   <div className="flex items-center gap-1">
-                    {/*<Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />*/}
+                    <StatIcon className="h-3 w-3 text-yellow-400" />
                     <span className="text-xs">
                         {product.rating}
-                      <span className="text-gray-400">({product.reviewCount})</span>
                       </span>
                   </div>
                 </div>
@@ -147,6 +103,19 @@ const MainPage = () => {
             </Card>
           ))}
         </div>
+        {hasNextPage && (
+          <div
+            ref={observerTargetRef}
+            className="text-center p-6"
+          >
+            {isFetchingNextPage && <p className="text-sm text-pink-500">추가 제품 로딩 중...</p>}
+          </div>
+        )}
+        {!hasNextPage && products.length === 0 && (
+          <div className="text-center p-6 text-gray-500 text-sm">
+            더 이상 추천할 제품이 없습니다.
+          </div>
+        )}
       </div>
 
     </div>
