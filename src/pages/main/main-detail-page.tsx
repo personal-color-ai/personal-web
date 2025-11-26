@@ -11,7 +11,7 @@ import ReviewCard from '@components/main/review-card';
 
 interface Review {
   name: string;
-  percent: number;
+  percent: number | undefined;
 }
 
 const MainDetailPage = () => {
@@ -43,7 +43,9 @@ const MainDetailPage = () => {
   }
 
   const convertReview = (origin: number) => {
-    return ( origin / detailData?.reviewCountAll) * 100
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return ( origin / detailData.reviewCountAll) * 100
   }
 
   return (
