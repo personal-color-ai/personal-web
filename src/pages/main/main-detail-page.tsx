@@ -42,11 +42,10 @@ const MainDetailPage = () => {
     window.open(detailData?.originUrl)
   }
 
-  const convertReview = (origin: number) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    return ( origin / detailData.reviewCountAll) * 100
-  }
+  const convertReview = (origin: number | undefined) => {
+    if (!origin || !detailData?.reviewCountAll) return 0;
+    return (origin / detailData.reviewCountAll) * 100;
+  };
 
   return (
     <div className="h-dvh">
