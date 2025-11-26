@@ -1,10 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import SearchIcon from '@assets/search.svg?react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import StatIcon from '@assets/star.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
