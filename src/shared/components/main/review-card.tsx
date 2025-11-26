@@ -11,7 +11,7 @@ interface ReviewCardProps {
   userDescription: string;
   likes: number;
   rating: number;
-  createdAt: string;
+  createdAt: number | string;
 }
 
 const ReviewCard = (props: ReviewCardProps) => {
