@@ -1,8 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { productApi } from '@apis/productApi';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import { ProductRequest } from '@types/product';
 
 export const useInfiniteProductList = (params: { 'member-id': number; size: number }) => {
   return useInfiniteQuery({
@@ -15,9 +12,8 @@ export const useInfiniteProductList = (params: { 'member-id': number; size: numb
       });
     },
     getNextPageParam: (lastPage, allPages) => {
-      const currentPage = allPages.length - 1;
-      if (lastPage.isLast) return undefined;
-      return currentPage + 1;
+      if (lastPage.result.isLast) return undefined;
+      return allPages.length;
     },
   });
 };

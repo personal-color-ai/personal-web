@@ -21,10 +21,10 @@ const MainPage = () => {
     size: 10,
   });
 
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const products = data?.pages.flatMap(page => page.result?.list || []) || [];
-
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
@@ -80,9 +80,9 @@ const MainPage = () => {
               />
             ))
           )}
-          {products.map((product: ProductInfo) => (
+          {products.map((product: ProductInfo, idx) => (
             <Card
-              key={product.id}
+              key={idx}
               className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => {navigate(`/product/${product.id}`)}}
             >
@@ -116,7 +116,7 @@ const MainPage = () => {
             {isFetchingNextPage && <p className="text-sm text-pink-500">추가 제품 로딩 중...</p>}
           </div>
         )}
-        {!hasNextPage && products.length === 0 && (
+        {!hasNextPage && (
           <div className="text-center p-6 text-gray-500 text-sm">
             더 이상 추천할 제품이 없습니다.
           </div>

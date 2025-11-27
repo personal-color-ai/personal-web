@@ -9,6 +9,16 @@ export interface ProductInfo {
   rating: number;
   imageUrl: string;
 }
+
+export interface ProdcutCard {
+  list: ProductInfo[];
+  listSize: number;
+  totalPage: number;
+  totalElements: number;
+  isFirst: boolean;
+  isLast: boolean;
+}
+
 export interface ProductRequest {
   'member-id': number;
   page: number;
@@ -16,12 +26,7 @@ export interface ProductRequest {
 }
 
 export interface ProductResponse extends ApiResponse {
-  result: ProductInfo[];
-  listSize: number;
-  totalPage: number;
-  totalElements: number;
-  isFirst: boolean;
-  isLast: boolean;
+  result: ProdcutCard
 }
 
 export interface ProductDetailRequest {
