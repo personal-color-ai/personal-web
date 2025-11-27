@@ -102,7 +102,7 @@ const MainDetailPage = () => {
 
         </div>
         <div className="w-full h-20"></div>
-        <div className="fixed bottom-5 left-0 right-0 bg-white  max-w-md mx-auto">
+        <div className="fixed bottom-5 left-0 right-0 bg-white  max-w-md mx-auto px-5">
           <Button
             onClick={onClickBuy}
             className="flex-1 w-full h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
