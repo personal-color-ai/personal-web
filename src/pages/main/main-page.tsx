@@ -1,9 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+import {useNavigate} from 'react-router-dom';
 import SearchIcon from '@assets/search.svg?react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import StatIcon from '@assets/star.svg?react';
 import {Card, CardContent} from '@components/main/card-item';
 import { ImageWithFallback } from '@components/main/image-with-fallback';
@@ -14,6 +11,7 @@ import {ProductInfo} from '@types/product';
 
 const MainPage = () => {
   const [colorType, setColorType] = useState<string>("가을 웜 뮤트");
+  const navigate = useNavigate();
   const memberId = 1;
 
   const observerTargetRef = useRef<HTMLDivElement>(null);
@@ -23,10 +21,8 @@ const MainPage = () => {
     size: 10,
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const products = data?.pages.flatMap(page => page.result?.list || []) || [];
 
+  const products = data?.pages.flatMap(page => page.result?.list || []) || [];
 
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
@@ -52,10 +48,6 @@ const MainPage = () => {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) {
-    return <div className="text-center p-10">⏳ 제품 목록을 불러오는 중...</div>;
-  }
-
   const convertScore = (origin: number) => {
     const scoreOutOf5 = (origin / 100) * 5;
     return Math.round(scoreOutOf5 * 10) / 10;
@@ -78,11 +70,19 @@ const MainPage = () => {
       <div className="p-8">
         <p className=" text-black text-lg font-semibold mb-5">당신을 위한 추천 제품</p>
         <div className="grid grid-cols-2 gap-3">
-          {products.map((product: ProductInfo, idx: number) => (
+          {isLoading && (
+            Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="w-full h-60 aspect-square bg-gray-200 animate-pulse rounded-md"
+              />
+            ))
+          )}
+          {products.map((product: ProductInfo, idx) => (
             <Card
               key={idx}
               className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => 2}
+              onClick={() => {navigate(`/product/${product.id}`)}}
             >
               <CardContent className="p-0">
                 <div className="aspect-square bg-gray-100 relative">
@@ -114,7 +114,7 @@ const MainPage = () => {
             {isFetchingNextPage && <p className="text-sm text-pink-500">추가 제품 로딩 중...</p>}
           </div>
         )}
-        {!hasNextPage && products.length === 0 && (
+        {!hasNextPage && (
           <div className="text-center p-6 text-gray-500 text-sm">
             더 이상 추천할 제품이 없습니다.
           </div>
