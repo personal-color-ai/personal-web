@@ -16,6 +16,7 @@ interface ReviewCardProps {
 
 const ReviewCard = (props: ReviewCardProps) => {
   const [expanded, setExpanded] = useState(false);
+  console.log(props.userDescription)
 
   return (
     <div className="flex gap-3 border border-gray-200 rounded-2xl p-4">
