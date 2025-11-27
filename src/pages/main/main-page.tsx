@@ -22,8 +22,6 @@ const MainPage = () => {
   });
 
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   const products = data?.pages.flatMap(page => page.result?.list || []) || [];
 
   useEffect(() => {
