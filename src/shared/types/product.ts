@@ -29,6 +29,17 @@ export interface ProductResponse extends ApiResponse {
   result: ProdcutCard
 }
 
+export interface ProductPromptRequest {
+  'member-id': number;
+  prompt: string;
+  page: number;
+  size: number;
+}
+
+export interface ProductPrompt {
+
+}
+
 export interface ProductDetailRequest {
   id: number;
 }
