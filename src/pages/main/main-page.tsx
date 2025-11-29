@@ -142,7 +142,7 @@ const MainPage = () => {
           <p
             className={`
       bg-fuchsia-50 rounded-3xl shadow-[0px_8px_24px_0px_rgba(0,0,0,0.15)] p-3 px-8 text-l
-      transform transition-all duration-500 ease-out
+      transform transition-all duration-500 ease-out whitespace-nowrap
       ${isPromptOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}
     `}
             style={{ transitionDelay: '0ms' }}
@@ -192,7 +192,7 @@ const MainPage = () => {
     bottom-6
     left-1/2
     transform
-    ${!isPromptOpen ? 'translate-x-[100px] scale-100' : '-translate-x-1/2 scale-125'}
+    ${!isPromptOpen ? 'translate-x-[83px] scale-100' : '-translate-x-1/2 scale-125'}
   `}
         >
           <PromptIcon />
