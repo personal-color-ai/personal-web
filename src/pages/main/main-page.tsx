@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import SearchIcon from '@assets/search.svg?react';
 import StatIcon from '@assets/star.svg?react';
 import PromptIcon from '@assets/prompt.svg?react';
@@ -14,7 +14,8 @@ import {ProductInfo} from '@types/product';
 import { useGetProductPrompt } from '../../hooks/useGetProductPrompt';
 
 const MainPage = () => {
-  const [colorType, setColorType] = useState<string>("가을 웜 뮤트");
+  const [searchParams] = useSearchParams();
+  const [colorType, setColorType] = useState<string>(searchParams.get('colorType') || "가을 웜 뮤트");
   const [recommended, setRecommended] = useState<string>("");
   const [isPromptOpen, setIsPromptOpen] = useState<boolean>(false);
   const navigate = useNavigate();
