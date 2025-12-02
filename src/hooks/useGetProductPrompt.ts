@@ -15,6 +15,7 @@ export const useGetProductPrompt = (params: { 'member-id': number; prompt:string
       if (lastPage.result.isLast) return undefined;
       return allPages.length;
     },
-    enabled: !!prompt
+    enabled: false,
+    retry: false,
   })
 }
